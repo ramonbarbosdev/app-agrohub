@@ -44,12 +44,16 @@ export class AuthService {
   }
 
   obterOrganizacao(credenciais: any): Observable<any> {
-
     return this.http
       .post(`${this.apiUrl}/auth/obter-organizacao`, credenciais, { withCredentials: true })
       .pipe(
-        tap((user) => {
-         
+        tap((user: any) => {
+          const userInfo = {
+            token: user.tempToken,
+          };
+
+          this.userSubject.next(userInfo);
+          sessionStorage.setItem('user', JSON.stringify(userInfo));
         }),
         catchError((e) => {
           console.log(e);
@@ -60,7 +64,6 @@ export class AuthService {
   }
 
   login(credenciais: any): Observable<any> {
-
     return this.http.post(`${this.apiUrl}/auth/login`, credenciais, { withCredentials: true }).pipe(
       tap((user) => {
         this.userSubject.next(user);
@@ -78,11 +81,8 @@ export class AuthService {
     const userJson = sessionStorage.getItem('user');
     if (!userJson) return of();
 
-
     return this.http.get(`${this.apiUrl}/auth/me`, { withCredentials: true }).pipe(
-      tap((user) => {
-       
-      }),
+      tap((user) => {}),
       catchError((error) => {
         this.userSubject.next(null);
         sessionStorage.removeItem('user');

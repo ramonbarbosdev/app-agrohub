@@ -68,10 +68,14 @@ export class BaseService {
     );
   }
 
-  findAll(endpoint: string): Observable<any> {
+  findAll(endpoint: string, token?:string): Observable<any> {
     const url = `${this.apiUrl}/${endpoint}`;
 
-    return this.http.get<any>(url).pipe(
+    const headers = {
+      Authorization: token || '',
+    };
+
+    return this.http.get<any>(url, { headers }).pipe(
       tap((res) => {
         return res;
       }),

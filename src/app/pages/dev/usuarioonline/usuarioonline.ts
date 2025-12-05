@@ -10,6 +10,7 @@ import { CardModule } from 'primeng/card';
 import { AvatarModule } from 'primeng/avatar';
 import { ListboxModule } from 'primeng/listbox';
 import { DataViewModule } from 'primeng/dataview';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-usuarioonline',
@@ -32,10 +33,17 @@ export class Usuarioonline {
 
   public baseService = inject(BaseService);
   private wsService = inject(WebsocketService);
+  private auth = inject(AuthService);
 
   ngOnInit() {
-    this.wsService.getOnline().subscribe((msg) => {
-      this.carregarUsuarios();
+    const user = this.auth.getUserSubbject();
+    const login = user?.login;
+
+    this.wsService.getOnline().subscribe((data: any) => {
+   
+      if (data.login !== login) {
+        this.carregarUsuarios();
+      }
     });
 
     this.carregarUsuarios();

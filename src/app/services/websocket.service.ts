@@ -36,9 +36,9 @@ export class WebsocketService {
       console.log('Conectado ao WebSocket');
       this.connectionReadySubject.next(true); //sinaliza
 
-      //atualizar comentario projeto
-      this.stompClient.subscribe('/topic/online', () => {
-        this.OnlineSubject.next();
+      this.stompClient.subscribe('/topic/online', (message: IMessage) => {
+        const data = JSON.parse(message.body);
+        this.OnlineSubject.next(data); // passa o login no evento
       });
     };
 
@@ -49,12 +49,9 @@ export class WebsocketService {
     this.stompClient.activate();
   }
 
-
   getOnline(): Observable<void> {
     return this.OnlineSubject.asObservable();
   }
-
- 
 
   sendMessage(destination: string, payload: any) {
     if (this.stompClient && this.connected) {

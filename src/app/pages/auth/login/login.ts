@@ -67,6 +67,7 @@ export class Login {
 
     this.auth.obterOrganizacao(this.objeto).subscribe({
       next: (res) => {
+      
         this.visibleOrganizacao = true;
         this.listaEmpresa = (res.tenants as any).map((index: any) => {
           const item = new FlagOption();

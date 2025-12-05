@@ -14,7 +14,7 @@ export class App {
   baseService = inject(BaseService);
 
   ngOnInit() {
-    this.waitForBackend();
+    // this.waitForBackend();
   }
 
   waitForBackend() {

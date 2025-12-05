@@ -7,4 +7,5 @@ export class Auth {
   public imd: string = '';
   public id_tenant!: string;
   public isAreaDev!: boolean;
+  public tempToken: string = '';
 }
